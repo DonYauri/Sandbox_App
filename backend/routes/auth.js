@@ -5,6 +5,13 @@ const User = require('../models/User');
 
 const router = express.Router();
 
+const requireAuth = require('../middleware/auth');
+
+router.get('/me', requireAuth, async (req,res) =>{
+       const user = await User.findById(req.userId).select(`-password`);
+       res.json(user); 
+});
+
 // REGISTER
 router.post('/register', async (req, res) => {
   try {
